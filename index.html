@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;padding: 0;
+		}
+		body{
+			background-color: #666;
+		}
+		#container{
+			width: 800px;margin: 0 auto;
+		}
+		#myCvs{
+			background-color: #fff;
+		}
+		.color{
+			width: 40px;height: 40px;display: inline-block;
+		}
+		.greenBtn{
+			background-color: green;
+		}
+		.blueBtn{
+			background-color: blue;
+		}
+		.yellowBtn{
+			background-color: yellow;
+		}
+		.redBtn{
+			background-color: red;
+		}
+		.blackBtn{
+			background-color: black;
+		}
+		.pen{
+			display: inline-block;background-color: #000;border-radius: 50%
+		}
+		.pensize10{width: 10px;height: 10px;}
+		.pensize20{width: 20px;height: 20px;}
+		.pensize30{width: 30px;height: 30px;}
+		.pensize40{width: 40px;height: 40px;}
+		#clear{
+			width: 60px;height: 30px;background-color: orange;border-radius: 5px;line-height: 30px;
+			text-align: center;color: #fff;font-family: '微软雅黑';font-size: 15px;border: 0px;
+		}
+		</style>
+		<script type="text/javascript" src='jquery-1.12.4.js'></script>
+</head>
+<body>
+	<div id="container">
+		<canvas id='myCvs' width="800" height="600"></canvas>
+		<div class="btn-section">
+			<span class='color greenBtn'date-color='green'></span>
+			<span class='color blueBtn'date-color='blue'></span>
+			<span class='color yellowBtn'date-color='yellow'></span>
+			<span class='color redBtn'date-color='red'></span>
+			<span class='color blackBtn'date-color='black'></span>
+			<span class='pen pensize10'date-size='10'></span>
+			<span class='pen pensize20'date-size='20'></span>
+			<span class='pen pensize30'date-size='30'></span>
+			<span class='pen pensize40'date-size='40'></span>
+			<button id='clear'>清除</button>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function G(sId) {
+			return document.getElementById(sId)
+	}
+		var clear = G('clear')
+		var cvs = G('myCvs')
+		var ctx = cvs.getContext('2d')
+		var switchBtn = false
+		var penX = 0
+		var penY = 0
+		 
+		var lineWidth = 10
+		var strokeStyle = 'red'
+
+		$('.color').click(function(){
+			 strokeStyle = $(this).attr('date-color')
+		})
+
+
+		$('.pen').click(function(){
+			 lineWidth = $(this).attr('date-size')
+		})
+
+		cvs.addEventListener('mousedown',function(e){ //鼠标按下时11111111111111111111111111111111111
+			switchBtn = true //用来判断鼠标按下抬起状态
+			penX = e.offsetX
+			penY = e.offsetY
+		})
+
+
+		cvs.addEventListener('mousemove',function(e){ //鼠标移动时11111111111111111111111111111111111111
+			if (switchBtn) {
+				
+				ctx.beginPath()
+			    ctx.moveTo(penX,penY)
+
+			    penX = e.offsetX //鼠标按下获取第一个点之后 移动中的点需要重新定义!!!!!!!!!!!!111 放在第一个点的下面
+				penY = e.offsetY
+				ctx.lineWidth = lineWidth
+				ctx.strokeStyle = strokeStyle
+				ctx.lineCap = 'round'
+			    ctx.lineTo(e.offsetX,e.offsetY)
+			    ctx.stroke()
+			    ctx.closePath()
+			}
+		})
+
+
+		cvs.addEventListener('mouseup',function(e){ //鼠标抬起时11111111111111111111111111111111111111111111
+			switchBtn= false;
+		});
+
+
+		clear.addEventListener('click',function(e){
+			ctx.clearRect(0,0, 800, 600)
+		})
+
+</script>
+</html>
